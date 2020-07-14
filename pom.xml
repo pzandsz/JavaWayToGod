@@ -11,6 +11,7 @@
     <modules>
         <module>JavaProxy</module>
         <module>nettyDemo</module>
+        <module>socket</module>
     </modules>
 
     <dependencies>
@@ -62,6 +63,13 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>3.2.5</version>
+        </dependency>
+
+        <!-- netty -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.12.Final</version>
         </dependency>
 
     </dependencies>
