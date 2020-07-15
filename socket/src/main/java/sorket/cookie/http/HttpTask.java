@@ -1,6 +1,7 @@
 package sorket.cookie.http;
 
 import sorket.cookie.domain.Request;
+import sorket.cookie.domain.Response;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -32,6 +33,7 @@ public class HttpTask implements Runnable{
             PrintWriter out = new PrintWriter(outputStream);
 
             Request httpRequest = HttpMessageParser.parse2request(socket.getInputStream());
+
             Map<String, String> headers = httpRequest.getHeaders();
             System.out.println("-------------------------------------");
             System.out.println(httpRequest.getMethod());
@@ -46,8 +48,16 @@ public class HttpTask implements Runnable{
                 // 根据请求结果进行响应，省略返回
                 String result = "...";
                 String httpRes = HttpMessageParser.buildResponse(httpRequest, result);
-
+                Response response = new Response();
+                Map<String, String> headers1 = httpRequest.getHeaders();
+                String cookie = headers.get("Cookie");
+                cookie = cookie + ";test=kkk";
+                headers.put("Cookie",cookie);
+//                System.out.println(cookie);
+                response.setHeaders(headers1);
                 out.print(httpRes);
+                out.print(response  );
+
             } catch (Exception e) {
                 String httpRes = HttpMessageParser.buildResponse(httpRequest, e.toString());
                 out.print(httpRes);
