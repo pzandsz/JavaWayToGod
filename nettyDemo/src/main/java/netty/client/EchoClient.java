@@ -6,6 +6,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import netty.handler.EchoClientHandler;
 
 import java.net.InetSocketAddress;
@@ -22,7 +23,9 @@ public class EchoClient {
 
         try{
             Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(group).remoteAddress(new InetSocketAddress("127.0.0.1",8088))
+            bootstrap.group(group)
+                    .channel(NioSocketChannel.class)
+                    .remoteAddress(new InetSocketAddress("127.0.0.1",8089))
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {

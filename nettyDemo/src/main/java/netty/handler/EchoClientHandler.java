@@ -21,7 +21,7 @@ public class EchoClientHandler implements ChannelInboundHandler {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
+        System.out.println("成功建立连接!!!");
     }
 
     @Override
