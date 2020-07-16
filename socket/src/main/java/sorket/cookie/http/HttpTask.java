@@ -1,5 +1,6 @@
 package sorket.cookie.http;
 
+import com.google.gson.Gson;
 import sorket.cookie.domain.Request;
 import sorket.cookie.domain.Response;
 
@@ -36,7 +37,8 @@ public class HttpTask implements Runnable{
 
             Map<String, String> headers = httpRequest.getHeaders();
             System.out.println("-------------------------------------");
-            System.out.println(httpRequest.getMethod());
+            Gson gson = new Gson();
+            System.out.println(gson.toJson(httpRequest));
             headers.forEach((a,b)->{
                 if(a.toLowerCase().equals("cookie")){
                     System.out.println(a + "," + b);
@@ -48,15 +50,7 @@ public class HttpTask implements Runnable{
                 // 根据请求结果进行响应，省略返回
                 String result = "...";
                 String httpRes = HttpMessageParser.buildResponse(httpRequest, result);
-                Response response = new Response();
-                Map<String, String> headers1 = httpRequest.getHeaders();
-                String cookie = headers.get("Cookie");
-                cookie = cookie + ";test=kkk";
-                headers.put("Cookie",cookie);
-//                System.out.println(cookie);
-                response.setHeaders(headers1);
                 out.print(httpRes);
-                out.print(response  );
 
             } catch (Exception e) {
                 String httpRes = HttpMessageParser.buildResponse(httpRequest, e.toString());
