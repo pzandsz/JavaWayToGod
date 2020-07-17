@@ -44,16 +44,19 @@ public class HttpTask implements Runnable{
                     System.out.println(a + "," + b);
                 }
             });
+
+            System.out.println(httpRequest.getMessage());
             System.out.println("-------------------------------------");
 
             try {
                 // 根据请求结果进行响应，省略返回
                 String result = "...";
-                String httpRes = HttpMessageParser.buildResponse(httpRequest, result);
+                String cookie = "test=kk;";
+                String httpRes = HttpMessageParser.buildResponse(httpRequest, result,cookie);
                 out.print(httpRes);
 
             } catch (Exception e) {
-                String httpRes = HttpMessageParser.buildResponse(httpRequest, e.toString());
+                String httpRes = HttpMessageParser.buildResponse(httpRequest, e.toString(),null);
                 out.print(httpRes);
             }
             out.flush();

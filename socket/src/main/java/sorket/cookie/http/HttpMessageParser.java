@@ -55,7 +55,7 @@ public class HttpMessageParser {
 
     /**
      * 根据标注http协议，解析正文
-     *
+     * 在解析请求信息时，需要知道请求的字节长度 contentLen
      * @param reader
      * @param request
      * @throws IOException
@@ -89,38 +89,66 @@ public class HttpMessageParser {
     public static Request parse2request(InputStream reqStream) throws IOException {
         BufferedReader httpReader = new BufferedReader(new InputStreamReader(reqStream, "UTF-8"));
         Request httpRequest = new Request();
+        //读取请求行
         decodeRequestLine(httpReader, httpRequest);
+        //读取请求头
         decodeRequestHeader(httpReader, httpRequest);
+        //读取请求数据
         decodeRequestMessage(httpReader, httpRequest);
         return httpRequest;
     }
 
-    public static String buildResponse(Request request, String response) {
+    /**
+     * 构建响应头信息
+     * @param request
+     * @param response
+     * @param cookies
+     * @return
+     */
+    public static String buildResponse(Request request, String response,String cookies) {
         Response httpResponse = new Response();
+        //设置响应状态行
         httpResponse.setCode(200);
         httpResponse.setStatus("ok");
         httpResponse.setVersion(request.getVersion());
 
+        //设置消息报头
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("Content-Length", String.valueOf(response.getBytes().length));
+        //设置cookie
+        headers.put("Set-Cookie",cookies);
         httpResponse.setHeaders(headers);
 
         httpResponse.setMessage(response);
 
         StringBuilder builder = new StringBuilder();
+
+        //响应状态行
         buildResponseLine(httpResponse, builder);
+        //响应头
         buildResponseHeaders(httpResponse, builder);
+        //响应正文
         buildResponseMessage(httpResponse, builder);
         return builder.toString();
     }
 
 
+    /**
+     * 构建响应状态行
+     * @param response
+     * @param stringBuilder
+     */
     private static void buildResponseLine(Response response, StringBuilder stringBuilder) {
         stringBuilder.append(response.getVersion()).append(" ").append(response.getCode()).append(" ")
                 .append(response.getStatus()).append("\n");
     }
 
+    /**
+     * 构建响应正文
+     * @param response
+     * @param stringBuilder
+     */
     private static void buildResponseHeaders(Response response, StringBuilder stringBuilder) {
         for (Map.Entry<String, String> entry : response.getHeaders().entrySet()) {
             stringBuilder.append(entry.getKey()).append(":").append(entry.getValue()).append("\n");
@@ -128,6 +156,11 @@ public class HttpMessageParser {
         stringBuilder.append("\n");
     }
 
+    /**
+     * 构建响应正文
+     * @param response
+     * @param stringBuilder
+     */
     private static void buildResponseMessage(Response response, StringBuilder stringBuilder) {
         stringBuilder.append(response.getMessage());
     }
