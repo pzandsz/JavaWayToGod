@@ -23,7 +23,7 @@ import java.net.InetSocketAddress;
 public class ChatClient {
 
 
-    public void start(String domain , int port , Message message) throws InterruptedException {
+    public void start(String domain , int port ) throws InterruptedException {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();
@@ -38,7 +38,7 @@ public class ChatClient {
                                     .addLast(new ObjectDecoder(1024*1024,
                                             ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())))
                                     .addLast(new ObjectEncoder())
-                                    .addLast(new MessageWriteHandle(message));
+                                    .addLast(new MessageWriteHandle());
 
                         }
                     });

@@ -42,6 +42,8 @@ public class MessageWriteHandle implements ChannelInboundHandler {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("连接建立成功");
+        //开启子线程，监听控制台
+
         //连接成功后发送消息
         setMessage(ctx , message);
     }
