@@ -6,9 +6,17 @@ import io.netty.channel.ChannelInboundHandler;
 /**
  * 类说明:
  *
+ *
+ *
+ *
  * @author zengpeng
  */
 public class ChatServerHandler implements ChannelInboundHandler {
+    /**
+     *
+     * @param ctx
+     * @throws Exception
+     */
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
 
