@@ -32,7 +32,7 @@ public class Request {
     private Map<String,String> headers;
 
     /**
-     * 请求参数相关
+     * 请求消息相关
      */
     private String message;
 }
