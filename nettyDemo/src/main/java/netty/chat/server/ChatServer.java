@@ -53,6 +53,8 @@ public class ChatServer {
 
             //绑定到端口和启动服务器  同步
             ChannelFuture f = server.bind().sync();
+            System.out.println(EchoServer.class.getName() +
+                    " started and listening for connections on " + f.channel().localAddress());
             f.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();

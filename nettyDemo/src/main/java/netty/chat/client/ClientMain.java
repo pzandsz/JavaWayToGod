@@ -1,5 +1,6 @@
 package netty.chat.client;
 
+import netty.chat.client.handler.MessageWriteHandle;
 import netty.chat.domain.Message;
 
 import java.util.Date;
@@ -22,7 +23,7 @@ public class ClientMain {
         message.setSendTime(new Date());
         message.setSenderId(1L);
 
-
         client.start("127.0.0.1",8085,message);
+
     }
 }

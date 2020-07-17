@@ -10,9 +10,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
-import netty.chat.client.handler.ChatClientWriteMessageHandler;
+import netty.chat.client.handler.MessageWriteHandle;
 import netty.chat.domain.Message;
-import netty.handler.EchoClientHandler;
 
 import java.net.InetSocketAddress;
 
@@ -23,13 +22,14 @@ import java.net.InetSocketAddress;
  */
 public class ChatClient {
 
+
     public void start(String domain , int port , Message message) throws InterruptedException {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group)
                     .channel(NioSocketChannel.class)
-                    .localAddress(new InetSocketAddress(domain, port))
+                    .remoteAddress(new InetSocketAddress(domain, port))
                     .handler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
@@ -38,12 +38,15 @@ public class ChatClient {
                                     .addLast(new ObjectDecoder(1024*1024,
                                             ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())))
                                     .addLast(new ObjectEncoder())
-                                    .addLast(new ChatClientWriteMessageHandler(message));
+                                    .addLast(new MessageWriteHandle(message));
 
                         }
                     });
+
+
+
             //绑定到端口和启动服务器  同步
-            ChannelFuture f = bootstrap.bind().sync();
+            ChannelFuture f = bootstrap.connect().sync();
             f.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();
@@ -52,4 +55,5 @@ public class ChatClient {
         }
 
     }
+
 }
