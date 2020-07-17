@@ -1,6 +1,7 @@
 package netty.chat.server;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -11,6 +12,7 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import netty.chat.domain.Message;
 import netty.chat.server.handler.ChatMessageReadServerHandler;
+import netty.server.EchoServer;
 
 import java.net.InetSocketAddress;
 
@@ -27,7 +29,7 @@ public class ChatServer {
      * 开启服务器
      * @param port 监听端口号
      */
-    public void startServer(int port){
+    public void startServer(int port) throws InterruptedException {
         /**
          * Nio事件循环组
          */
@@ -48,9 +50,14 @@ public class ChatServer {
                                     .addLast(new ChatMessageReadServerHandler<Message>());
                         }
                     });
+
+            //绑定到端口和启动服务器  同步
+            ChannelFuture f = server.bind().sync();
+            f.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();
         }finally {
+            group.shutdownGracefully().sync();
 
         }
     }
