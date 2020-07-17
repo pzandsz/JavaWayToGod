@@ -38,7 +38,7 @@ public class HttpTask implements Runnable{
             Map<String, String> headers = httpRequest.getHeaders();
             System.out.println("-------------------------------------");
             Gson gson = new Gson();
-            System.out.println(gson.toJson(httpRequest));
+//            System.out.println(gson.toJson(httpRequest));
             headers.forEach((a,b)->{
                 if(a.toLowerCase().equals("cookie")){
                     System.out.println(a + "," + b);
