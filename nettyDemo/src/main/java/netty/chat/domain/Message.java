@@ -11,7 +11,7 @@ import java.util.Date;
  * @author zengpeng
  */
 @Data
-public class Message implements Serializable {
+public class Message extends BaseMessage implements Serializable {
 
     /**
      * 消息

@@ -1,18 +1,23 @@
 package netty.chat.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import netty.chat.server.handler.ChatServerHandler;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
+import netty.chat.domain.Message;
+import netty.chat.server.handler.ChatMessageReadServerHandler;
 
 import java.net.InetSocketAddress;
 
 /**
  * 类说明: 聊天室服务器
+ *
+ * 服务器只负责读取消息，不进行转发或者回复
  *
  * @author zengpeng
  */
@@ -34,8 +39,13 @@ public class ChatServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            //添加编码，解码handler
-                            ch.pipeline().addLast(new ChatServerHandler());
+                            //添加编码器对象，对象序列化最大长度为1M
+                            //设置weakCachingConcurrentResolverMap对类加载器进行缓存 支持多线程并发访问 防止内存溢出
+                            ch.pipeline()
+                                    .addLast(new ObjectDecoder(1024*1024,
+                                            ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())))
+                                    .addLast(new ObjectEncoder())
+                                    .addLast(new ChatMessageReadServerHandler<Message>());
                         }
                     });
         }catch (Exception e){
