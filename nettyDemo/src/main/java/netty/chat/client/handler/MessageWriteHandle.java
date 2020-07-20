@@ -1,8 +1,10 @@
 package netty.chat.client.handler;
 
+import com.google.gson.Gson;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInboundHandler;
+import io.netty.util.ReferenceCountUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -64,7 +66,12 @@ public class MessageWriteHandle implements ChannelInboundHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        Message message = (Message) msg;
+        Gson gson = new Gson();
+        System.out.println("消息对象: " + gson.toJson(message));
 
+        //释放该对象在缓存池中的占用,在正式使用时应该充分考虑何时才能清除
+        ReferenceCountUtil.release(msg);
     }
 
     @Override

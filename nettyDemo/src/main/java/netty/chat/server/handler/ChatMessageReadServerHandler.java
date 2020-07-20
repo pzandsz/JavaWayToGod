@@ -5,6 +5,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
 import netty.chat.domain.Message;
+import netty.chat.server.utils.ServerMessageUtil;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -13,6 +18,9 @@ import netty.chat.domain.Message;
  * @author zengpeng
  */
 public class ChatMessageReadServerHandler<T extends Message> implements ChannelInboundHandler {
+
+    public static ConcurrentHashMap<String, ChannelHandlerContext> channelMap = new ConcurrentHashMap<>();
+
     /**
      *
      * @param ctx
@@ -30,7 +38,22 @@ public class ChatMessageReadServerHandler<T extends Message> implements ChannelI
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("channel连接到服务器");
+        System.out.println("channel连接成功");
+
+        //将当前连接的channel注册到map中
+        channelMap.put(ctx.channel().id().asLongText(),ctx);
+
+        //通知其他连接，当前有新连接建立
+        Collection<ChannelHandlerContext> values = channelMap.values();
+        Message message = new Message();
+        message.setMessage(ctx.channel().remoteAddress().toString() + "加入！");
+        values.forEach((val)->{
+            ServerMessageUtil.sendMessage(val.channel().id().asLongText(),message);
+        });
+
+
+
+
     }
 
     @Override
