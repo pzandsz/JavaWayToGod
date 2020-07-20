@@ -51,10 +51,20 @@ public class ChatServer {
                         }
                     });
 
-            //绑定到端口和启动服务器  同步
+            /**
+             * 绑定端口，同步等待连接
+             * 服务端启动辅助类配置完成之后，调用他的bind方法监听端口
+             * 随后调用sync方法阻塞等待绑定成功
+             *
+             */
             ChannelFuture f = server.bind().sync();
             System.out.println(EchoServer.class.getName() +
                     " started and listening for connections on " + f.channel().localAddress());
+
+            /**
+             * 等待服务端监听端口关闭
+             * 阻塞等待
+             */
             f.channel().closeFuture().sync();
         }catch (Exception e){
             e.printStackTrace();

@@ -1,11 +1,14 @@
 package netty.chat.client.handler;
 
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInboundHandler;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import netty.chat.domain.Message;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 类说明:
@@ -27,6 +30,11 @@ public class MessageWriteHandle implements ChannelInboundHandler {
 
     private Message message;
 
+    /**
+     * 以channel的id为key,ChannelHandlerContext为value
+     */
+    public static ConcurrentHashMap<String,ChannelHandlerContext> contextMap = new ConcurrentHashMap<>();
+
 
 
     @Override
@@ -42,16 +50,12 @@ public class MessageWriteHandle implements ChannelInboundHandler {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("连接建立成功");
-        //开启子线程，监听控制台
-
+        //将当前channel的channelHandlerContext注册到map中
+        contextMap.put(ctx.channel().id().asLongText(),ctx);
         //连接成功后发送消息
-        setMessage(ctx , message);
+//        setMessage(ctx , message);
     }
 
-    private void setMessage(ChannelHandlerContext ctx , Message message){
-        System.out.println("发送消息");
-        ctx.writeAndFlush(message);
-    }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
