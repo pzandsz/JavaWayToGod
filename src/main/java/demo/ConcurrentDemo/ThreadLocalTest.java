@@ -36,24 +36,20 @@ class ThreadLocalTask implements  Runnable{
     ThreadLocal<String> threadLocalString=new ThreadLocal<String>(){
         @Override
         protected String initialValue() {
-            return "ThreadLocal";
+            return Thread.currentThread().getName();
         }
     };
 
     @Override
     public void run() {
-        synchronized (threadLocalInteger){
-            Thread thread =Thread.currentThread();
-            System.out.println("线程"+thread.getName()+",integer初始值:"+threadLocalInteger.get());
-            System.out.println("线程"+thread.getName()+",string初始值:"+threadLocalString.get());
+        Thread thread =Thread.currentThread();
+        System.out.println("线程"+thread.getName()+",integer初始值:"+threadLocalInteger.get());
+        System.out.println("线程"+thread.getName()+",string初始值:"+threadLocalString.get());
 
-            threadLocalInteger.set(5);
-            threadLocalString.set("Welcome!");
+        threadLocalInteger.set(5);
+        threadLocalString.set("Welcome!");
 
-            System.out.println("线程"+thread.getName()+",integer修改后:"+threadLocalInteger.get());
-            System.out.println("线程"+thread.getName()+",string修改后:"+threadLocalString.get());
-
-
-        }
+        System.out.println("线程"+thread.getName()+",integer修改后:"+threadLocalInteger.get());
+        System.out.println("线程"+thread.getName()+",string修改后:"+threadLocalString.get());
     }
 }
