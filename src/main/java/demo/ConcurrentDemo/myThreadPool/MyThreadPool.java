@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 /**
  * 创建一个自己的线程池
- * 存在的问题：在销毁线程池是，会有些因为lock.wait所等待的线程无法被唤醒
+ * 存在的问题：在销毁线程池时，会有些因为lock.wait所等待的线程无法被唤醒
  *
  *
  * 解决的问题：针对将线程使用等待通知模式的锁一定要是同一把锁.
@@ -40,7 +40,7 @@ public class MyThreadPool implements Pool{
     public MyThreadPool(int size){
         this.size=size;
         //将线程池设置为存活状态
-        isShut=false;
+        isShut = false;
 
 
         //初始化工作线程容器

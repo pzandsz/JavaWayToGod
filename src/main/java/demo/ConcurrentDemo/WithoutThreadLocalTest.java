@@ -1,7 +1,5 @@
 package demo.ConcurrentDemo;
 
-import sun.awt.windows.ThemeReader;
-
 public class WithoutThreadLocalTest {
     static class TestTask implements Runnable{
         Person person;

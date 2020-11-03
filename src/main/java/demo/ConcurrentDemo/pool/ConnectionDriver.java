@@ -20,6 +20,7 @@ public class ConnectionDriver {
 
         @Override
         public Object invoke(Object obj, Method method, Object[] args) throws Throwable {
+            //commit方法
             if(method.getName().equals("commit")){
 
                 /**
@@ -27,7 +28,7 @@ public class ConnectionDriver {
                  * 下述代码是线程休眠100ms
                  */
                 TimeUnit.MILLISECONDS.sleep(100);
-//                System.out.println("\n"+System.currentTimeMillis()+"监控到commit方法");
+                System.out.println("\n"+System.currentTimeMillis()+"监控到commit方法");
             }
             return null;
         }

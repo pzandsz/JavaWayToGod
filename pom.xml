@@ -25,6 +25,7 @@
         <module>nettyDemo</module>
         <module>socket</module>
         <module>reflexDemo</module>
+        <module>jmx</module>
     </modules>
 
     <dependencies>

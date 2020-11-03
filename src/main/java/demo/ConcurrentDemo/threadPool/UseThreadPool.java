@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 
 /**
  * 使用线程池
+ * @author zengpeng
  */
 public class UseThreadPool {
     public static void main(String[] args) {
@@ -18,7 +19,7 @@ public class UseThreadPool {
          *      就会再创建一个线程资源。
          * keepAliveTime:和TimeUnit时间单位联合使用，表示线程空闲后的存活时间
          *
-         * new ArrayBlockingQueue<Runnable>(10):用于存储等待线程的组色队列，容量在这里设定为10
+         * new ArrayBlockingQueue<Runnable>(10):用于存储等待线程的阻塞队列，容量在这里设定为10
          *
          * new ThreadPoolAdv.MyThreadFactory(),自定义创建的线程池的方式
          *
