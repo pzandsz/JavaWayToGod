@@ -26,6 +26,7 @@
         <module>socket</module>
         <module>reflexDemo</module>
         <module>jmx</module>
+        <module>common-client</module>
     </modules>
 
     <dependencies>

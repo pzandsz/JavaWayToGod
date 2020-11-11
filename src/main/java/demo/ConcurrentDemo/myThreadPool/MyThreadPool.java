@@ -37,6 +37,10 @@ public class MyThreadPool implements Pool{
         return isShut;
     }
 
+    /**
+     * 构造方法
+     * @param size
+     */
     public MyThreadPool(int size){
         this.size=size;
         //将线程池设置为存活状态
@@ -100,27 +104,24 @@ public class MyThreadPool implements Pool{
     }
 
     /**
-     * 工作线程对象
+     * 工作线程对象，私有对象
      */
-    private   class  ExecutorImpl  extends  Thread  implements  Executor{
+    private class  ExecutorImpl extends Thread implements Executor{
 
         /**
          * 任务对象
          */
         private  Task task;
 
-
-
         public  ExecutorImpl(){}
-
 
         /**
          * 获得任务对象
          * @return
          */
         @Override
-        public  Task getTask() {
-            return this .task;
+        public Task getTask() {
+            return this.task;
         }
 
         /**
@@ -128,9 +129,8 @@ public class MyThreadPool implements Pool{
          * @param task
          */
         @Override
-        public   void  setTask(Task task) {
-            this .task = task;
-
+        public void setTask(Task task) {
+            this.task = task;
             startTask();
         }
 
@@ -139,11 +139,12 @@ public class MyThreadPool implements Pool{
          * 唤醒任务对象
          */
         @Override
-        public   void  startTask(){
-            synchronized (lock){
+        public void startTask(){
+            synchronized(lock){
                 /**
                  * 执行这条语句后将随机唤醒一个任务
                  * 如果只有一个任务，就是将指定任务唤醒
+                 *
                  */
                 System.out.println("唤醒一个任务");
                 lock.notify();
@@ -179,12 +180,11 @@ public class MyThreadPool implements Pool{
                         //执行这个语句的线程进入等待状态
                         System.out.println(Thread.currentThread().getName()+"线程等待");
                         lock.wait();
-
-//                        System.out.println(Thread.currentThread().getName()+"线程正在处理任务"+task.toString());
+                        System.out.println(Thread.currentThread().getName()+"线程正在处理任务"+task.toString());
                         //执行任务对象中的任务
                         getTask().execute();
 
-                    }  catch  (InterruptedException e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
@@ -194,7 +194,7 @@ public class MyThreadPool implements Pool{
                      * 将执行完的任务对象的工作线程放回到工作线程池中
                      * 接着唤醒所有在等待的线程(告诉他们有空闲的工作线程了)
                      */
-                    pool.addFirst(ExecutorImpl. this );
+                    pool.addFirst(ExecutorImpl.this );
                     pool.notifyAll();
                 }
 
