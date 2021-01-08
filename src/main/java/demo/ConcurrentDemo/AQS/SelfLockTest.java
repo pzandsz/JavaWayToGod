@@ -8,37 +8,37 @@ import java.util.concurrent.locks.Lock;
  * 测试SelfLock
  */
 public class SelfLockTest {
-    public void test() throws InterruptedException {
-        final Lock lock=new SelfLock();
-        class Worker implements Runnable{
+    final Lock lock=new SelfLock();
 
-            @Override
-            public void run() {
-                lock.lock();
-                System.out.println(Thread.currentThread().getName());
-                try {
-                    Thread.sleep(1000);
+    class Worker implements Runnable{
 
-                }catch (Exception e){
-                    e.printStackTrace();
-                }finally {
-                    lock.unlock();
-                }
+        @Override
+        public void run() {
+            lock.lock();
+            try {
+                Thread.sleep(10000);
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                lock.unlock();
             }
         }
+    }
+    public void test() throws InterruptedException {
+
 
         /**
          * 启动四个线程
          */
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 100; i++) {
             Worker w=new Worker();
             new Thread(w).start();
         }
 
-        for (int i = 0; i < 10; i++) {
-            Thread.sleep(1000);
-            System.out.println("--------------------------------");
-        }
+//        for (int i = 0; i < 10; i++) {
+//            Thread.sleep(1000);
+////            System.out.println(i + ":--------------------------------");
+//        }
     }
 
     public static void main(String[] args) throws InterruptedException {
