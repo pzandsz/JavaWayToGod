@@ -6,6 +6,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
 /**
+ * AQS是一种提供了原子式管理同步状态、阻塞和唤醒线程功能以及队列模型的简单框架
  * 通过AQS实现我们自己的独占锁
  * @author 曾鹏
  */
@@ -34,7 +35,8 @@ public class SelfLock implements Lock {
              * compareAndSetState(0, 1)是一个原子操作，
              * 其代表的是如果原来的值是0那就将其设为1，并且返回ture。
              * 那这个原来的值是指的谁的值呢？从compareAndSetState中并看不出来。
-             * 那就从整体来看，在AQS中有个表示当前锁的状态的int值state,
+             *
+             * 那就从整体来看，在AQS中有个表示当前锁的状态的int值state（）,
              * 当state等于0时，表示锁可用，否则表示锁定状态，是否可用还需考虑其他情况如可重入性。
              * compareAndSetState(0, 1)就是设置这个state的状态
              */
