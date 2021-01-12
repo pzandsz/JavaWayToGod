@@ -21,15 +21,15 @@ public class CallableTest1 {
         private int[] list;
 
         public CountTask(int[] list){
-            this.list=list;
+            this.list = list;
         }
 
         @Override
         public Integer call() {
             System.out.println("子线程正在计算...");
-            int count=0;
-            for (int i=0;i<list.length;i++){
-                count+=list[i];
+            int count = 0;
+            for (int i = 0; i < list.length ; i++){
+                count += list[i];
             }
             return new Integer(count);
         }
