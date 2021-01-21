@@ -14,7 +14,7 @@ public class ServerTask implements Runnable{
     private InputStream inputStream;
 
     public ServerTask(Socket socket) throws IOException {
-        this.socket=socket;
+        this.socket = socket;
 
     }
 
@@ -24,8 +24,8 @@ public class ServerTask implements Runnable{
             /**
              * 获得socket的输入输出流对象
              */
-            inputStream=socket.getInputStream();
-            outputStream=socket.getOutputStream();
+            inputStream = socket.getInputStream();
+            outputStream = socket.getOutputStream();
 
             /**
              * 创建一个字节数组
@@ -33,9 +33,9 @@ public class ServerTask implements Runnable{
             byte[] buffer = new byte[1024];
             int result = inputStream.read(buffer);
 
-            System.out.println("线程:"+ Thread.currentThread().getName()+"开始处理任务");
+            System.out.println("线程:" + Thread.currentThread().getName() + "开始处理任务");
 
-            System.out.println("客户端传来:"+result);
+            System.out.println("客户端传来:" + result);
 
             String str = new String(buffer, "utf-8");
 

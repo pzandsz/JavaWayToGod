@@ -14,6 +14,7 @@ public class Client {
         InputStream inputStream = null;
 
         for (int i = 0; i < 1000; i++) {
+            //请求连接
             Socket socket = new Socket("localhost", 8081);
             outputStream = socket.getOutputStream();
 
