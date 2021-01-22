@@ -16,7 +16,7 @@ public class BioServer {
     private static ExecutorService threadPool= Executors.newFixedThreadPool(5);
 
     private static void start() throws IOException {
-        serverSocket=new ServerSocket(8081);
+        serverSocket = new ServerSocket(8081);
         System.out.println("服务已启动，端口号为:"+8081);
 
         //死循环，轮询
@@ -25,7 +25,7 @@ public class BioServer {
             System.out.println("有新的客户端请求连接...");
 
             //根据socket创建一个服务器端的任务
-            BioServerHandler handler=new BioServerHandler(socket);
+            BioServerHandler handler = new BioServerHandler(socket);
             //将任务交给线程池处理
             threadPool.execute(handler);
         }

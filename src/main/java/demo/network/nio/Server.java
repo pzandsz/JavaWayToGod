@@ -8,7 +8,17 @@ import java.util.Iterator;
 
 /**
  * nio的网络模型:服务器端
+ * 1.应用进程 系统调用recvfrom
+ * 2.内核是否准备好数据
+ *      否：立即返回数据未准备好，进程不阻塞，重复操作1，2
+ *      是：立即返回数据已准备好，进程不阻塞
+ * 3.复制数据报，将数据从内核空间复制到用户空间
+ * 4.复制完成，返回数据包
  *
+ * 每次应用进程询问内核是否有数据报准备好，当有数据报准备好时，就进行拷贝数据报的操作，
+ * 从内核拷贝到用户空间，和拷贝完成返回的这段时间，应用进程是阻塞的。但在没有数据报准备好时，
+ * 并不会阻塞程序，内核直接返回未准备就绪的信号，等待应用进程的下一个轮询。
+ * 但是，轮询对于 CPU 来说是较大的浪费，一般只有在特定的场景下才使用。
  */
 public class Server {
     /**
@@ -21,7 +31,7 @@ public class Server {
         /**
          * 获取一个ServerSocket通信
          */
-        ServerSocketChannel serverSocketChannel=ServerSocketChannel.open();
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         /**
          * 设置为非阻塞的I/O通信模型
          */
@@ -34,7 +44,7 @@ public class Server {
         /**
          * 获得多路复用器
          */
-        selector=Selector.open();
+        selector = Selector.open();
         /**
          * 将通道管理器与通道绑定，并为该通道注册SelectionKey.OP_ACCEPT(可连接就绪状态)事件
          * 只有当该事件到达时，Selector.select()会返回，否则一直阻塞。
@@ -60,7 +70,7 @@ public class Server {
                 /**
                  * 获得一个SelectionKey对象
                  */
-                SelectionKey key=iterator.next();
+                SelectionKey key = iterator.next();
                 iterator.remove();
 
                 //客户端请求建立连接
@@ -82,8 +92,8 @@ public class Server {
                     byte[] data = buffer.array();
                     String message = new String(data);
 
-                    ByteBuffer outbuffer = ByteBuffer.wrap(message.getBytes());
-                    channel.write(outbuffer);
+                    ByteBuffer outBuffer = ByteBuffer.wrap(message.getBytes());
+                    channel.write(outBuffer);
                 }
 
             }

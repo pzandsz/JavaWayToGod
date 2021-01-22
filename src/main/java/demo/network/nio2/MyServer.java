@@ -16,17 +16,21 @@ public class MyServer {
     public static void start() throws IOException {
 
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-        Selector selector=Selector.open();
+        Selector selector = Selector.open();
 
 
         serverSocketChannel.bind(new InetSocketAddress(3231));
 
         serverSocketChannel.configureBlocking(false);
+        /**
+         * 将通道管理器与通道绑定，并为该通道注册SelectionKey.OP_ACCEPT(可连接就绪状态)事件
+         * 只有当该事件到达时，Selector.select()会返回，否则一直阻塞。
+         */
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
         while (true){
             int select = selector.select();
-            if(select==0){
+            if(select == 0){
                 System.out.println("出现空轮询bug");
                 break;
             }

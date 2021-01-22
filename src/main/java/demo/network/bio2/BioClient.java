@@ -15,7 +15,7 @@ public class BioClient {
 
     public static void main(String[] args) throws IOException {
         //创建一个连接
-        Socket socket=new Socket("localhost",8081);
+        Socket socket = new Socket("localhost",8081);
 
         //在客户端可以输入信息
         System.out.println("请输入请求信息:");
@@ -25,7 +25,7 @@ public class BioClient {
 
         PrintWriter pw=null;
         while (true){
-            pw=new PrintWriter(socket.getOutputStream());
+            pw = new PrintWriter(socket.getOutputStream());
 
             //监听鼠标事件
             pw.println(new Scanner(System.in).next());

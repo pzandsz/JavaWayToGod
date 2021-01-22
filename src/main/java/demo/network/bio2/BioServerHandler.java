@@ -18,16 +18,16 @@ public class BioServerHandler implements Runnable{
     @Override
     public void run() {
         //BufferedReader对各种Reader提供了缓存功能，这样可以避免多次读取底层IO
-        try(BufferedReader bf=new BufferedReader(new InputStreamReader(socket.getInputStream()))){
+        try(BufferedReader bf = new BufferedReader(new InputStreamReader(socket.getInputStream()))){
 
-            PrintWriter pw=new PrintWriter(socket.getOutputStream(),true);
+            PrintWriter pw = new PrintWriter(socket.getOutputStream(),true);
 
             String message;
             String result;
 
-            while ((message=bf.readLine())!=null){
-                System.out.println("服务器端收到信息:"+message);
-                result="服务器确认收到信息:"+message;
+            while ((message = bf.readLine())!=null){
+                System.out.println("服务器端收到信息:" + message);
+                result="服务器确认收到信息:" + message;
                 //将信息发送到连接(通道)中
                 pw.print(result);
             }
