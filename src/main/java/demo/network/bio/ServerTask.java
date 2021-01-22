@@ -35,9 +35,10 @@ public class ServerTask implements Runnable{
 
             System.out.println("线程:" + Thread.currentThread().getName() + "开始处理任务");
 
-            System.out.println("客户端传来:" + result);
 
             String str = new String(buffer, "utf-8");
+            System.out.println("客户端传来:" + str);
+
 
             String server = new String("from server：" + str);
 
