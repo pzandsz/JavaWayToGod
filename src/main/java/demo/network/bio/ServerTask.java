@@ -44,8 +44,8 @@ public class ServerTask implements Runnable{
 
             Charset cs = Charset.forName("utf-8");
 
-            //休眠0.1秒
-            TimeUnit.MILLISECONDS.sleep(100);
+            //休眠1秒
+            TimeUnit.MILLISECONDS.sleep(1000);
 
             /**
              * 服务器端的响应
