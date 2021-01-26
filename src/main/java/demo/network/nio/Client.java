@@ -11,9 +11,9 @@ import java.util.Iterator;
 public class Client {
     /**
      *
-     * 这是一个典型的没能理解NIO而写出来的程序，在编写客户端代码时，不需要在客户端去创建一个selector对象，
-     * 因为创建的selector对象不是和服务器端的selector对象是同一个，
-     * 而且对于客户端的注册事件在服务器端监听到连接之后，通过selector.channel获得客户端channel,再去注册事件
+     * 在编写客户端代码时，一般不需要在客户端去创建一个selector对象，
+     * 在客户端创建的selector对象不是和服务器端的selector对象是同一个，
+     * 如果代码在客户端和服务段都创建了selector,那么可以把他想象成两个server的交互，两者的交互都通过selector来进行
      *
      * 多路复用器、选择器（具体看使用的操作系统以及jdk版本，1.5有可能就是select而1.7就是epoll）
      */
