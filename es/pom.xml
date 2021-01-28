@@ -23,7 +23,7 @@
         <maven-compiler-plugin-version>3.1</maven-compiler-plugin-version>
         <httpclient-version>4.5.2</httpclient-version>
         <guava-version>25.1-jre</guava-version>
-        <quartz-version>2.2.3</quartz-version>
+        <quartz-version>2.3.2</quartz-version>
         <interceptor4j-version>1.0.0-SNAPSHOT</interceptor4j-version>
         <gson-version>2.8.2</gson-version>
         <spring-version>5.1.10.RELEASE</spring-version>
