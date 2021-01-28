@@ -27,6 +27,7 @@
         <module>reflexDemo</module>
         <module>jmx</module>
         <module>common-client</module>
+        <module>es</module>
     </modules>
 
     <dependencies>
